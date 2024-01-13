@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_ui/main.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
@@ -43,7 +44,7 @@ class _PersonScreenState extends State<PersonScreen> {
   //   return isSuccess;
   // }
 
-  Future<bool> savePerson(
+  Future<bool> addPerson(
       String firstName, String lastName, String phone, String address) async {
     bool isSuccess = false;
     var client = http.Client();
@@ -70,6 +71,13 @@ class _PersonScreenState extends State<PersonScreen> {
       client.close();
     }
     return isSuccess;
+  }
+
+  resetInputFields() {
+    _firstNameCtlr.clear();
+    _lastNameCtlr.clear();
+    _phoneCtlr.clear();
+    _addressCtlr.clear();
   }
 
   @override
@@ -143,7 +151,32 @@ class _PersonScreenState extends State<PersonScreen> {
                           lastName.isNotEmpty &&
                           phone.isNotEmpty &&
                           address.isNotEmpty) {
-                        savePerson(firstName, lastName, phone, address);
+                        bool isSaved = await addPerson(
+                            firstName, lastName, phone, address);
+                        if (isSaved) {
+                          resetInputFields();
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Successfully create'),
+                            backgroundColor: Colors.green,
+                            duration: Duration(seconds: 5),
+                          ));
+                          Navigator.pushAndRemoveUntil(context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return const MyHomePage();
+                          }), (r) {
+                            return false;
+                          });
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Error while saving data'),
+                            backgroundColor: Colors.red,
+                            duration: Duration(seconds: 5),
+                          ));
+                        }
                       } else {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(

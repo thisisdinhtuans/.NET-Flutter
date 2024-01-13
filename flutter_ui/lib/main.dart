@@ -32,23 +32,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Person List'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
   late Future<void> _initPersonData;
   List<Person> lstPerson = [];
   @override
@@ -89,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text("Person List"),
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -122,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const PersonScreen()));
         },
-        tooltip: 'Increment',
+        tooltip: 'Add new person',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
