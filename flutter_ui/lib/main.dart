@@ -105,6 +105,38 @@ class _MyHomePageState extends State<MyHomePage> {
                           "${lstPerson[index].firstname}-${lstPerson[index].lastname}"),
                       subtitle: Text(
                           "${lstPerson[index].phone} ${lstPerson[index].address}"),
+                      trailing: Expanded(
+                        child: SizedBox(
+                          width: 60,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: GestureDetector(
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.purple,
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const PersonScreen(),
+                                              settings: RouteSettings(
+                                                  name: "editPerson",
+                                                  arguments: convert.jsonEncode(
+                                                      lstPerson[index]))));
+                                    }),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(3.0),
+                                child: Icon(Icons.delete, color: Colors.red),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 );

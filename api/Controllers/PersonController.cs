@@ -75,23 +75,23 @@ namespace api.Controllers
             return Ok("Succesfully Created");
         }
 
-        [HttpPut("edit/{personId}")]
+        [HttpPut("edit")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCategory(int personId, [FromBody] PersonDto updatedPerson)
+        public IActionResult UpdateCategory( [FromBody] PersonDto updatedPerson)
         {
             if (updatedPerson == null)
                 return BadRequest(ModelState);
-            if (personId != updatedPerson.id)
-                return BadRequest(ModelState);
-            if (!_personRepository.PersonExits(personId))
-                return NotFound();
+            //if (personId != updatedPerson.id)
+            //    return BadRequest(ModelState);
+            //if (!_personRepository.PersonExits(personId))
+            //    return NotFound();
             if (!ModelState.IsValid)
                 return BadRequest();
-            var person=_personRepository.GetPerson(personId);
+            //var person=_personRepository.GetPerson(personId);
             var personMap = _mapper.Map<Person>(updatedPerson);
-            personMap.createdat = person.createdat;
+            personMap.createdat = DateTime.Now;
             if (!_personRepository.UpdatePerson(personMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating person");

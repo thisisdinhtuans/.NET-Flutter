@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ui/main.dart';
+import 'package:flutter_ui/person.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
@@ -13,6 +14,9 @@ class PersonScreen extends StatefulWidget {
 }
 
 class _PersonScreenState extends State<PersonScreen> {
+  bool isEditMode = false;
+  int editPersonId = 0;
+  Person? person;
   final TextEditingController _firstNameCtlr = TextEditingController();
   final TextEditingController _lastNameCtlr = TextEditingController();
   final TextEditingController _phoneCtlr = TextEditingController();
@@ -73,6 +77,36 @@ class _PersonScreenState extends State<PersonScreen> {
     return isSuccess;
   }
 
+  Future<bool> editPerson(int id, String firstName, String lastName,
+      String phone, String address) async {
+    bool isSuccess = false;
+    var client = http.Client();
+    try {
+      var url = Uri.https('10.0.2.2:7185', '/api/Person/edit');
+      var headers = {'Content-Type': 'application/json'};
+      var body = convert.jsonEncode({
+        'id': id,
+        'firstname': firstName,
+        'lastname': lastName,
+        'phone': phone,
+        'address': address,
+      });
+
+      var response = await client.put(url, headers: headers, body: body);
+
+      if (response.statusCode == 204) {
+        isSuccess = true;
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    } catch (error) {
+      print('Error: $error');
+    } finally {
+      client.close();
+    }
+    return isSuccess;
+  }
+
   resetInputFields() {
     _firstNameCtlr.clear();
     _lastNameCtlr.clear();
@@ -98,9 +132,33 @@ class _PersonScreenState extends State<PersonScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)?.settings.arguments != null) {
+      var personString = ModalRoute.of(context)?.settings.arguments as String;
+      print(personString);
+      if (personString.isNotEmpty) {
+        setState(() {
+          isEditMode = true;
+          person = Person.fromJson(jsonDecode(personString));
+          if (person != null) {
+            _firstNameCtlr.text = person!.firstname;
+            _lastNameCtlr.text = person!.lastname;
+            _phoneCtlr.text = person!.phone;
+            _addressCtlr.text = person!.address;
+            editPersonId = person!.id;
+          }
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Add Person')),
+        appBar: AppBar(
+            title: Text("${(isEditMode == true) ? "Edit" : "Add"} Person")),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -141,7 +199,7 @@ class _PersonScreenState extends State<PersonScreen> {
                   height: 15,
                 ),
                 ElevatedButton(
-                    child: const Text("Save"),
+                    child: Text((isEditMode == true) ? "Update" : "Create New"),
                     onPressed: () async {
                       var firstName = _firstNameCtlr.text;
                       var lastName = _lastNameCtlr.text;
@@ -151,14 +209,22 @@ class _PersonScreenState extends State<PersonScreen> {
                           lastName.isNotEmpty &&
                           phone.isNotEmpty &&
                           address.isNotEmpty) {
-                        bool isSaved = await addPerson(
-                            firstName, lastName, phone, address);
+                        bool isSaved = false;
+                        String resultText = "";
+                        if (isEditMode == true) {
+                          isSaved = await editPerson(editPersonId, firstName,
+                              lastName, phone, address);
+                          resultText = "Person detail updated successfully";
+                        } else {
+                          isSaved = await addPerson(
+                              firstName, lastName, phone, address);
+                          resultText = "Person detail added successfully";
+                        }
                         if (isSaved) {
                           resetInputFields();
                           // ignore: use_build_context_synchronously
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text('Successfully create'),
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(resultText),
                             backgroundColor: Colors.green,
                             duration: Duration(seconds: 5),
                           ));
