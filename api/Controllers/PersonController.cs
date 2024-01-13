@@ -99,7 +99,7 @@ namespace api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{personId}")]
+        [HttpDelete("delete/{personId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
