@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dJnX5NpGxIcGxJlievJ4CcvT9Ft+zWms/fuoouaT81InQcfYgrUWVPpHyMXyf6x5b2cFCskevV4yKqPplFjq1g==",
+  "dgSpecHash": "4z32SXeM4lcRXBoyHAiTTRzJCpQ5FvHQuQuVshNNdbQqUp0/aEL8NToPbGDFDPNtCE43ZQ9cJbV7cbl7htGHHw==",
   "success": true,
   "projectFilePath": "D:\\Crud-Flutter\\api\\api.csproj",
   "expectedPackageFiles": [
@@ -55,8 +55,8 @@
     "C:\\Users\\AD\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\AD\\.nuget\\packages\\system.text.encoding.codepages\\4.7.0\\system.text.encoding.codepages.4.7.0.nupkg.sha512",
     "C:\\Users\\AD\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
-    "C:\\Users\\AD\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
     "C:\\Users\\AD\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\AD\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
     "C:\\Users\\AD\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
     "C:\\Users\\AD\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
   ],

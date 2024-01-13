@@ -1,6 +1,7 @@
 ﻿using api.Dto;
 using api.Interfaces;
 using api.Models;
+using api.ViewModel;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +49,7 @@ namespace api.Controllers
         [HttpPost("create")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreatePerson([FromBody] PersonDto personCreate)
+        public IActionResult CreatePerson([FromBody] PersonViewModel personCreate)
         {
 
             if (personCreate == null)
