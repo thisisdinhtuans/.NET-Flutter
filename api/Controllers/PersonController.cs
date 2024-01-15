@@ -100,19 +100,19 @@ namespace api.Controllers
             return NoContent();
         }
 
-        [HttpDelete("delete/{personId}")]
+        [HttpDelete("delete")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteCategory(int personId)
+        public IActionResult DeleteCategory([FromBody] PersonId deletePerson)
         {
-            if (!_personRepository.PersonExits(personId))
+            if (!_personRepository.PersonExits(deletePerson.id))
             {
                 return NotFound();
             }
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (!_personRepository.DeletePerson(personId))
+            if (!_personRepository.DeletePerson(deletePerson.id))
             {
                 ModelState.AddModelError("", "Something went wrong deleting person");
             }

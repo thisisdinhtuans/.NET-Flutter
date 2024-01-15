@@ -69,6 +69,31 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<bool> deletePerson(int id) async {
+    bool isSuccess = false;
+    var client = http.Client();
+    try {
+      var url = Uri.https('10.0.2.2:7185', '/api/Person/delete');
+      var headers = {'Content-Type': 'application/json'};
+      var body = convert.jsonEncode({
+        'id': id,
+      });
+
+      var response = await client.delete(url, headers: headers, body: body);
+
+      if (response.statusCode == 204) {
+        isSuccess = true;
+      } else {
+        print('Request failed with status: ${response.statusCode}.');
+      }
+    } catch (error) {
+      print('Error: $error');
+    } finally {
+      client.close();
+    }
+    return isSuccess;
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -93,55 +118,145 @@ class _MyHomePageState extends State<MyHomePage> {
         child: FutureBuilder(
           future: _initPersonData,
           builder: (BuildContext context, snapshot) {
-            return ListView.builder(
-              itemCount: lstPerson.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    shadowColor: Colors.blueAccent,
-                    child: ListTile(
-                      title: Text(
-                          "${lstPerson[index].firstname}-${lstPerson[index].lastname}"),
-                      subtitle: Text(
-                          "${lstPerson[index].phone} ${lstPerson[index].address}"),
-                      trailing: Expanded(
-                        child: SizedBox(
-                          width: 60,
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: GestureDetector(
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.purple,
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+                {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                    // child: Text('Loading ...'),
+                  );
+                }
+              case ConnectionState.done:
+                return ListView.builder(
+                  itemCount: lstPerson.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      key: ValueKey(lstPerson[index].id),
+                      shadowColor: Colors.blueAccent,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Text(
+                              "${lstPerson[index].firstname}-${lstPerson[index].lastname}"),
+                          subtitle: Text(
+                              "${lstPerson[index].phone} ${lstPerson[index].address}"),
+                          trailing: Expanded(
+                            child: SizedBox(
+                              width: 60,
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: GestureDetector(
+                                        child: const Icon(
+                                          Icons.edit,
+                                          color: Colors.purple,
+                                        ),
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const PersonScreen(),
+                                                  settings: RouteSettings(
+                                                      name: "editPerson",
+                                                      arguments: convert
+                                                          .jsonEncode(lstPerson[
+                                                              index]))));
+                                        }),
+                                  ),
+                                  // Padding(
+                                  //     padding: const EdgeInsets.all(3.0),
+                                  //     child: Icon(Icons.delete, color: Colors.red),
+                                  //     onTap: () {
+                                  //       showDialog(
+                                  //           context: context,
+                                  //           builder: ((context) {
+                                  //             return AlertDialog(
+                                  //               title: const Text(
+                                  //                   "Are you sure, do you want to delete?"),
+                                  //               actions: [
+                                  //                 ElevatedButton(
+                                  //                   onPressed: () {},
+                                  //                   child: const Text("Yes"),
+                                  //                 ),
+                                  //                 ElevatedButton(
+                                  //                   onPressed: () {},
+                                  //                   child: const Text("No"),
+                                  //                 ),
+                                  //               ],
+                                  //             );
+                                  //           }));
+                                  //     })
+                                  Padding(
+                                    padding: const EdgeInsets.all(3.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: ((context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                  "Are you sure, do you want to delete?"),
+                                              actions: [
+                                                ElevatedButton(
+                                                    onPressed: () async {
+                                                      var isDeleted =
+                                                          await deletePerson(
+                                                              lstPerson[index]
+                                                                  .id);
+                                                      if (isDeleted) {
+                                                        //remove card items from the list
+                                                        lstPerson
+                                                            .elementAt(index);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                SnackBar(
+                                                          content: Text(
+                                                              "Removed Successfully"),
+                                                          backgroundColor:
+                                                              Colors.green,
+                                                          duration: Duration(
+                                                              seconds: 5),
+                                                        ));
+                                                      }
+                                                    },
+                                                    child: const Text("Yes"),
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(Colors.red),
+                                                    )),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text("No"),
+                                                ),
+                                              ],
+                                            );
+                                          }),
+                                        );
+                                      },
+                                      child:
+                                          Icon(Icons.delete, color: Colors.red),
                                     ),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const PersonScreen(),
-                                              settings: RouteSettings(
-                                                  name: "editPerson",
-                                                  arguments: convert.jsonEncode(
-                                                      lstPerson[index]))));
-                                    }),
+                                  )
+                                ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.all(3.0),
-                                child: Icon(Icons.delete, color: Colors.red),
-                              )
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
-              },
-            );
+            }
           },
         ),
       ),
