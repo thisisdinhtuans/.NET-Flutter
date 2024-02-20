@@ -167,29 +167,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                               index]))));
                                         }),
                                   ),
-                                  // Padding(
-                                  //     padding: const EdgeInsets.all(3.0),
-                                  //     child: Icon(Icons.delete, color: Colors.red),
-                                  //     onTap: () {
-                                  //       showDialog(
-                                  //           context: context,
-                                  //           builder: ((context) {
-                                  //             return AlertDialog(
-                                  //               title: const Text(
-                                  //                   "Are you sure, do you want to delete?"),
-                                  //               actions: [
-                                  //                 ElevatedButton(
-                                  //                   onPressed: () {},
-                                  //                   child: const Text("Yes"),
-                                  //                 ),
-                                  //                 ElevatedButton(
-                                  //                   onPressed: () {},
-                                  //                   child: const Text("No"),
-                                  //                 ),
-                                  //               ],
-                                  //             );
-                                  //           }));
-                                  //     })
                                   Padding(
                                     padding: const EdgeInsets.all(3.0),
                                     child: InkWell(
@@ -210,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       if (isDeleted) {
                                                         //remove card items from the list
                                                         lstPerson
-                                                            .elementAt(index);
+                                                            .removeAt(index);
                                                         Navigator.of(context)
                                                             .pop();
                                                         ScaffoldMessenger.of(
@@ -224,6 +201,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                                           duration: Duration(
                                                               seconds: 5),
                                                         ));
+                                                        Navigator
+                                                            .pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  MyHomePage()),
+                                                        );
                                                       }
                                                     },
                                                     child: const Text("Yes"),

@@ -2505,11 +2505,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Crud-Flutter\\api\\api.csproj",
+      "projectUniqueName": "D:\\.NET Learn Youtube\\JAGAN DIGITECH\\Crud-Flutter\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "D:\\Crud-Flutter\\api\\api.csproj",
+      "projectPath": "D:\\.NET Learn Youtube\\JAGAN DIGITECH\\Crud-Flutter\\api\\api.csproj",
       "packagesPath": "C:\\Users\\AD\\.nuget\\packages\\",
-      "outputPath": "D:\\Crud-Flutter\\api\\obj\\",
+      "outputPath": "D:\\.NET Learn Youtube\\JAGAN DIGITECH\\Crud-Flutter\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\AD\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2532,9 +2532,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "default"
       }
     },
     "frameworks": {

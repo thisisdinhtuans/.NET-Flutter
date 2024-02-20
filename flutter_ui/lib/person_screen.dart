@@ -22,32 +22,6 @@ class _PersonScreenState extends State<PersonScreen> {
   final TextEditingController _phoneCtlr = TextEditingController();
   final TextEditingController _addressCtlr = TextEditingController();
 
-  // Future<bool> savePerson(
-  //     String firstName, String lastName, String phone, String address) async {
-  //   bool isSuccess = false;
-  //   var client = http.Client();
-  //   try {
-  //     var response = await client
-  //         .post(Uri.https('10.0.2.2:7185', '/api/Person/create'), body: {
-  //       'firstname': firstName,
-  //       'lastname': lastName,
-  //       'phone': phone,
-  //       'address': address
-  //     });
-
-  //     if (response.statusCode == 200) {
-  //       isSuccess = true;
-  //     } else {
-  //       print('Request failed with status: ${response.statusCode}.');
-  //     }
-  //   } catch (error) {
-  //     print('Error: $error');
-  //   } finally {
-  //     client.close();
-  //   }
-  //   return isSuccess;
-  // }
-
   Future<bool> addPerson(
       String firstName, String lastName, String phone, String address) async {
     bool isSuccess = false;
@@ -164,7 +138,6 @@ class _PersonScreenState extends State<PersonScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                const Text("Test"),
                 TextFormField(
                   controller: _firstNameCtlr,
                   decoration: const InputDecoration(
